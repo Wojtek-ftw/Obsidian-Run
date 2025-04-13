@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "numpy_analysis"
+version = "0.1.0"
+description = "A custom numpy-based analysis package"
+authors = [
+    { name = "Wojciech Zacherek", email = "w.zacherek@outlook.com" }
+]
+requires-python = ">=3.8"
+dependencies = []
+
+[tool.setuptools]
+# Optional, but allows auto-finding packages
+package-dir = {"" = "numpy_analysis"}
+
+[tool.setuptools.packages.find]
+where = ["numpy_analysis"]
