@@ -1,1 +1,0 @@
-from numpy_analysis import row_sums,  dot_prod

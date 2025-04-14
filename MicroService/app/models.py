@@ -1,15 +1,41 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 
+# class MovieBase(BaseModel):
+#     id: int
+#     tconst: str
+#     primaryTitle: str
+#     startYear: int
+#     rank: Optional[int] = None
+#     averageRating: float
+#     numVotes: int
+#     runtimeMinutes: Optional[int] = None
+#     directors: Optional[str] = None
+#     writers: Optional[str] = None
+#     genres: Optional[str] = None
+#     IMDbLink: Optional[str] = None
+#     Title_IMDb_Link: Optional[str] = None
+
 class MovieBase(BaseModel):
-    title: str
-    genre: str
-    director: Optional[str]
-    year: int = Field(..., ge=1878, le=2100)
-    rating: float = Field(..., ge=0.0, le=10.0)
+    tconst: str
+    primaryTitle: str
+    startYear: int
+    rank: Optional[int] = None
+    averageRating: float
+    numVotes: int
+    runtimeMinutes: Optional[int] = None
+    directors: Optional[str] = None
+    writers: Optional[str] = None
+    genres: Optional[str] = None
+    IMDbLink: Optional[str] = None
+    Title_IMDb_Link: Optional[str] = None
+
 
 class MovieCreate(MovieBase):
     pass
 
 class Movie(MovieBase):
     id: int
+
+class MovieIn(MovieBase):
+    pass

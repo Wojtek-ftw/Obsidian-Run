@@ -1,3 +1,5 @@
 import polars as pl
-df = pl.read_csv("bigfile.csv")
-df.groupby("A").agg(pl.col("B").mean())  # 5x+ faster in many use cases
+
+def load_dataset():
+    df = pl.read_csv("../data/stock_details_5_years.csv", infer_schema_length=None)
+    return df

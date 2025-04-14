@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Movie</title>
+</head>
+<body>
+    <h2>Submit Movie Information</h2>
+    <form action="http://localhost:8000/movies" method="POST">
+        <label for="tconst">tconst:</label><br>
+        <input type="text" id="tconst" name="tconst" required><br><br>
+
+        <label for="primaryTitle">Primary Title:</label><br>
+        <input type="text" id="primaryTitle" name="primaryTitle" required><br><br>
+
+        <label for="startYear">Start Year:</label><br>
+        <input type="number" id="startYear" name="startYear" required><br><br>
+
+        <label for="rank">Rank:</label><br>
+        <input type="number" id="rank" name="rank" step="1" min="0"><br><br>
+
+        <label for="averageRating">Average Rating:</label><br>
+        <input type="number" id="averageRating" name="averageRating" step="0.1" min="0" max="10" required><br><br>
+
+        <label for="numVotes">Number of Votes:</label><br>
+        <input type="number" id="numVotes" name="numVotes" min="0" required><br><br>
+
+        <label for="runtimeMinutes">Runtime (in minutes):</label><br>
+        <input type="number" id="runtimeMinutes" name="runtimeMinutes" min="0"><br><br>
+
+        <label for="directors">Directors:</label><br>
+        <input type="text" id="directors" name="directors"><br><br>
+
+        <label for="writers">Writers:</label><br>
+        <input type="text" id="writers" name="writers"><br><br>
+
+        <label for="genres">Genres (comma separated):</label><br>
+        <input type="text" id="genres" name="genres"><br><br>
+
+        <label for="IMDbLink">IMDb Link:</label><br>
+        <input type="url" id="IMDbLink" name="IMDbLink"><br><br>
+
+        <label for="Title_IMDb_Link">Title IMDb Link (formatted):</label><br>
+        <input type="text" id="Title_IMDb_Link" name="Title_IMDb_Link"><br><br>
+
+        <input type="submit" value="Submit Movie">
+    </form>
+</body>
+</html>
