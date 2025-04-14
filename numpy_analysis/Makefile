@@ -17,7 +17,7 @@ pull_image:
 run:
 	docker run -it --rm \
 		-p $(NOTEBOOK_PORT):8888 \
-		-v $(NOTEBOOK_DIR):/home/johndoe/work \
+		-v $(NOTEBOOK_DIR):/home/jovyan/work \
 		--name $(CONTAINER_NAME) \
 		$(IMAGE_NAME)
 
