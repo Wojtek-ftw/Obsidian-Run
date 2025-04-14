@@ -1,4 +1,0 @@
-Polars had some trouble loading data due to incorrectly inferring column type. Add `infer_schema_length=None` to avoid this issue.
-Polars loading time is longer
-Polars memory profile is smaller initially. It does lazy loading: it doesn't load data into memory until it is explicitly used.
-Pandas memory can be optimized by changing column types to categorical. This is a similar process that zipping a file does.

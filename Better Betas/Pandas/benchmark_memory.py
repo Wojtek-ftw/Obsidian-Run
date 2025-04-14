@@ -71,19 +71,13 @@ def polars_tracemalloc_force_memory(func: Callable):
 
 
 def memory_bench():
-    pandas_tracemalloc_default(pdex.foo)
-    pandas_tracemalloc_dtype(pdex.foo)
-    polars_tracemalloc_default(poex.foo)
-    polars_tracemalloc_force_memory(poex.foo)
+    pandas_tracemalloc_default(pdex.loading_dataset)
+    pandas_tracemalloc_dtype(pdex.loading_dataset)
+    polars_tracemalloc_default(poex.load_dataset)
+    polars_tracemalloc_force_memory(poex.load_dataset)
 
 def main():
-    # load_time_bench()
     memory_bench()
-    # pddf = pdex.foo()
-    # podf = poex.foo()
-    # print(pddf.head())
-    # print(podf.head())
-    ...
 
 if __name__ == "__main__":
     main()

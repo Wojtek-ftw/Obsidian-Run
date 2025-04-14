@@ -15,8 +15,8 @@ def _benchmark(func_name, func, number=10):
     return duration
 
 def load_time_bench():
-    pd_dur = _benchmark("Pandas Load", pdex.foo, 10)
-    po_dur = _benchmark("Polars Load", poex.foo, 10)
+    pd_dur = _benchmark("Pandas Load", pdex.loading_dataset, 10)
+    po_dur = _benchmark("Polars Load", poex.load_dataset, 10)
 
 def main():
     load_time_bench()
