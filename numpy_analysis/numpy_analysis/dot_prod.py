@@ -1,6 +1,6 @@
 """
-Filename: row_sums.py
-Description: Contains numpy and pythonic implementation of row summations of a matrix.
+Filename: mat_myl.py
+Description: Contains numpy and pythonic implementation of matrix multiplication.
 
 Author: Wojciech Zacherek
 Created: 2025/04/13
@@ -24,58 +24,56 @@ def generate_matrix(n, start=0):
     return [[start + i * n + j for j in range(n)] for i in range(n)]
 
 
-def row_sums_py(matrix):
-    """Python row summation"""
-    return [sum(row) for row in matrix]
+# 4. Dot Product
+def dot_product_py(a, b):
+    return sum(x * y for x, y in zip(a, b))
 
-def row_sums_numpy(matrix):
-    """Numpy row summation"""
-    return np.sum(np.array(matrix), axis=1)
+def dot_product_numpy(a, b):
+    return np.dot(np.array(a), np.array(b))
 
-def _benchmark_old(func_name, stmt, setup, number=100000):
-    duration = timeit.timeit(stmt=stmt, setup=setup, number=number)
-    return duration
-
-def _benchmark(func_name, stmt, func, matrix, number=100000):
+def _benchmark(func_name, stmt, func, matrixA, matrixB, number=100000):
     duration = timeit.timeit(
         stmt=stmt,
-        globals={"Mat": matrix, func.__name__: func},
+        globals={"MatA": matrixA, "MatB": matrixB, func.__name__: func},
         number=number
     )
     print(f"{func_name:<25}: {duration:.5f} seconds")
     return duration
 
 def compare(size: int) -> list[float, float]:
-    Mat = generate_matrix(size)
+    MatA = list(range(10))
+    MatB = list(range(10))
 
     # Benchmark the pure Python function
     duration_py = _benchmark(
         f"Row Sums - Py ({size}x{size})",
-        "row_sums_py(Mat)",
-        row_sums_py,
-        Mat
+        "dot_product_py(MatA, MatB)",
+        dot_product_py,
+        MatA, MatB
     )
 
     # Benchmark the NumPy function
-    Mat_np = np.array(Mat)
+    MatA_np = np.array(MatB)
+    MatB_np = np.array(MatA)
     duration_numpy = _benchmark(
-        f"Row Sums - NumPy ({size}x{size})",
-        "row_sums_numpy(Mat)",
-        row_sums_numpy,
-        Mat_np
+        f"Row Sums - NumPy ({size})",
+        "dot_product_numpy(MatA, MatB)",
+        dot_product_numpy,
+        MatA, MatB
     )
 
     # Calculate and print the runtime differences
     rt_diff = duration_numpy - duration_py
     p_diff = rt_diff / duration_py
-    print(f"{size}x{size} Matrix - Runtime difference: {rt_diff:.5f} seconds")
-    print(f"{size}x{size} Matrix - Percentage difference: {100 * p_diff:.2f} %\n")
+    print(f"{size} Matrix - Runtime difference: {rt_diff:.5f} seconds")
+    print(f"{size} Matrix - Percentage difference: {100 * p_diff:.2f} %\n")
 
     return rt_diff, p_diff, duration_py, duration_numpy
 
+
 def run(matrix_sizes: Optional[list[int]] = None) -> tuple[list,list,list]:
     if not matrix_sizes:
-        matrix_sizes = [3, 4, 5, 6, 7, 8, 15, 16, 17, 31, 32, 33, 63, 64, 65]
+        matrix_sizes = [x+1 for x in range(64)]
     
     rt_diffs = []  # To store runtime differences
     p_diffs = []   # To store percentage differences
@@ -88,9 +86,9 @@ def run(matrix_sizes: Optional[list[int]] = None) -> tuple[list,list,list]:
         p_diffs.append(p_diff)
         py_times.append(py_time)
         numpy_times.append(numpy_time)
-        print(size)
 
     return matrix_sizes, rt_diffs, p_diffs, py_times, numpy_times
+
 
 def save_to_csv(matrix_sizes, py_times, numpy_times, rt_diffs, p_diffs, filename="benchmark_results.csv"):
     """Saves detailed benchmarking results to a CSV file."""
@@ -125,21 +123,21 @@ def plot(sizes, rt_diffs, p_diffs, py_times, numpy_times):
     # Plot Runtime Differences
     ax[0].plot(sizes, rt_diffs, marker='o', color='b', label='Runtime Diff (seconds)')
     ax[0].set_title("Runtime Difference (Pure Python - NumPy)")
-    ax[0].set_xlabel("Matrix Size (NxN)")
+    ax[0].set_xlabel("Matrix Size (N)")
     ax[0].set_ylabel("Time Difference (seconds)")
     ax[0].grid(True)
 
     # Plot Percentage Differences
     ax[1].plot(sizes, p_diffs, marker='o', color='r', label='Percentage Diff')
     ax[1].set_title("Percentage Difference (Pure Python - NumPy)")
-    ax[1].set_xlabel("Matrix Size (NxN)")
+    ax[1].set_xlabel("Matrix Size (N)")
     ax[1].set_ylabel("Percentage Difference (%)")
     ax[1].grid(True)
 
     ax[2].plot(sizes, py_times, marker='o', color='green', label='Python')
     ax[2].plot(sizes, numpy_times, marker='o', color='orange', label='NumPy')
     ax[2].set_title("Absolute Runtime Comparison")
-    ax[2].set_xlabel("Matrix Size (NxN)")
+    ax[2].set_xlabel("Matrix Size (N)")
     ax[2].set_ylabel("Runtime (seconds)")
     ax[2].legend()
     ax[2].grid(True)
@@ -149,7 +147,7 @@ def plot(sizes, rt_diffs, p_diffs, py_times, numpy_times):
 
 if __name__ == "__main__":
     _x = run()
-    save_to_csv(*_x,filename="../data/benchmark_row_sums.csv")
+    save_to_csv(*_x,filename="../data/benchmark_dot_prod.csv")
     fig = plot(*_x)
-    fig.savefig("../data/benchmark_row_sums.png")  # Save as PNG, or change format as needed
+    fig.savefig("../data/benchmark_dot_prod.png")  # Save as PNG, or change format as needed
 
