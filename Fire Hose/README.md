@@ -1,13 +1,15 @@
-# 🚰 Firehose Processor with Redis and Docker
+# Firehose Processor with Redis and Docker
 
 This project simulates a real-time streaming data pipeline using Redis pub/sub, where events are processed by multiple models with different latencies. It's fully Dockerized with separate services for publishing and processing.
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 firehose_project/
+├── README.md
+├── Makefile
 ├── docker-compose.yml
 ├── processor/
 │   ├── Dockerfile
@@ -22,7 +24,7 @@ firehose_project/
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Clone or unzip the project
 
@@ -33,12 +35,14 @@ cd firehose_project
 ### 2. Build the containers
 
 ```bash
+make build
 docker-compose build
 ```
 
 ### 3. Run the services
 
 ```bash
+make up
 docker-compose up
 ```
 
@@ -57,12 +61,13 @@ cat processor/output.csv | head
 ### 5. Stop everything
 
 ```bash
+make down
 docker-compose down
 ```
 
 ---
 
-## 🧠 Model Latencies
+## Simulated Model Latencies
 
 | Model  | Latency |
 |--------|---------|
@@ -74,23 +79,18 @@ The processor decides which models to run for each incoming event using a dispat
 
 ---
 
-## 📝 Notes
+## Notes
 
 - The `output.csv` includes the original event timestamp and the timestamps for when each model completed.
 - The processor is written with `asyncio` to allow concurrent model execution.
 - The firehose simulates high-frequency data ingestion as might be seen in trading platforms or telemetry systems.
+- Events that aren't immediately processed by the model are dropped, ensuring there is at least one element available for processing.
 
 ---
 
-## 🛠️ Requirements
+## Requirements
 
 - Docker
 - Docker Compose
 
 No local Python installation is required — everything runs in containers.
-
----
-
-## 📬 Questions or Improvements?
-
-Feel free to fork or open an issue with improvements or questions!

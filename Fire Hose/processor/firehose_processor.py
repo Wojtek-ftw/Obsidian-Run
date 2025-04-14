@@ -4,13 +4,17 @@ import datetime
 import redis.asyncio as redis
 import csv
 
+MODEL_WORKER_FLAG = True
+DELETE_OLD = True
+
 async def run_model(name, duration, item):
+    """Simulate model runtime based on guestimates provided by assessment"""
     await asyncio.sleep(duration)
-    item[name] = datetime.datetime.utcnow().isoformat()
+    item[name] = datetime.datetime.now().isoformat()
     return item
 
 async def model_worker(name, duration, queue, output_queue):
-    while True:
+    while MODEL_WORKER_FLAG:
         item = await queue.get()
         processed = await run_model(name, duration, item)
         await output_queue.put(processed)
@@ -26,14 +30,19 @@ async def redis_subscriber(input_queue):
             await input_queue.put(data)
 
 async def dispatcher(input_queue, model_queues):
+    """Adds the datapackets for each model to analyze"""
     counter = 0
     while True:
         item = await input_queue.get()
         await model_queues['model1'].put(dict(item))
-        if counter % 4 == 0:
-            await model_queues['model2'].put(dict(item))
-        if counter % 300 == 0:
-            await model_queues['model3'].put(dict(item))
+        if DELETE_OLD and model_queues['model1'].qsize() > 2: await model_queues['model1'].get()
+
+        await model_queues['model2'].put(dict(item))
+        if DELETE_OLD and model_queues['model2'].qsize() > 2: await model_queues['model2'].get()
+
+        await model_queues['model3'].put(dict(item))
+        if DELETE_OLD and model_queues['model3'].qsize() > 2: await model_queues['model3'].get()
+
         counter += 1
 
 async def output_writer(output_queue):
